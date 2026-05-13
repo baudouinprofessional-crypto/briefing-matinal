@@ -1,0 +1,29 @@
+name: ☀️ Briefing Matinal
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  envoyer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Télécharger les fichiers
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Installer les dépendances
+        run: npm install
+
+      - name: Lancer le briefing
+        run: node send-briefing.js
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
